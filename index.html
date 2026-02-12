@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learning Tools — Risorse Educative</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f5f3ef;
+      --surface: #ffffff;
+      --surface-alt: #f0ede7;
+      --border: #e0dbd2;
+      --accent: #5c6e4e;
+      --accent-light: #a3b58a;
+      --accent-muted: #d6e3c8;
+      --text-primary: #2a2820;
+      --text-secondary: #6b6556;
+      --text-muted: #9e9788;
+      --link: #3d5a8a;
+      --link-hover: #2c4168;
+      --tag-bg: #edeae3;
+      --shadow: 0 2px 12px rgba(60,55,45,0.07);
+      --shadow-card: 0 4px 20px rgba(60,55,45,0.10);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+
+    /* ─── HEADER ─── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 2rem 2rem;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+
+    header .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.35rem;
+    }
+
+    header .logo-icon {
+      width: 36px; height: 36px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 1.1rem;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    header p.subtitle {
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      font-weight: 300;
+      margin-top: 0.2rem;
+    }
+
+    /* ─── SEARCH ─── */
+    .search-wrap {
+      max-width: 520px;
+      margin: 1.2rem auto 0;
+    }
+
+    .search-wrap input {
+      width: 100%;
+      padding: 0.65rem 1rem 0.65rem 2.8rem;
+      border: 1.5px solid var(--border);
+      border-radius: 40px;
+      background: var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239e9788' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: 0.9rem center;
+    }
+
+    .search-wrap input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-muted);
+    }
+
+    /* ─── LAYOUT ─── */
+    .container {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* ─── STATS BAR ─── */
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 2.2rem;
+      align-items: center;
+    }
+
+    .stat-chip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 0.3rem 0.85rem;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .stat-chip span { color: var(--accent); font-weight: 600; }
+
+    /* ─── CATEGORY FILTER PILLS ─── */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .filter-pill {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 0.28rem 0.8rem;
+      font-size: 0.76rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.18s;
+      user-select: none;
+    }
+
+    .filter-pill:hover, .filter-pill.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+
+    /* ─── GRID ─── */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.4rem;
+    }
+
+    /* ─── CARD ─── */
+    .cat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+
+    .cat-card:hover {
+      box-shadow: var(--shadow-card);
+      transform: translateY(-2px);
+    }
+
+    .cat-header {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 1rem 1.2rem 0.9rem;
+      background: var(--surface-alt);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+    }
+
+    .cat-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .cat-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: 0.01em;
+    }
+
+    .cat-count {
+      margin-left: auto;
+      background: var(--tag-bg);
+      color: var(--text-muted);
+      border-radius: 10px;
+      padding: 0.1rem 0.55rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .cat-body { padding: 0.9rem 1.2rem 1rem; }
+
+    /* ─── SUBCATEGORY ─── */
+    .sub-section { margin-bottom: 0.85rem; }
+
+    .sub-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+      padding-bottom: 0.25rem;
+      border-bottom: 1px dashed var(--accent-muted);
+    }
+
+    /* ─── LINK LIST ─── */
+    .link-list { list-style: none; }
+
+    .link-item {
+      display: flex;
+      flex-direction: column;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid #f2efe9;
+      transition: background 0.12s;
+    }
+
+    .link-item:last-child { border-bottom: none; }
+
+    .link-note {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 0.1rem;
+      text-transform: capitalize;
+    }
+
+    .link-item a {
+      font-size: 0.82rem;
+      color: var(--link);
+      text-decoration: none;
+      word-break: break-word;
+      transition: color 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .link-item a::before {
+      content: '↗';
+      font-size: 0.65rem;
+      color: var(--accent-light);
+      flex-shrink: 0;
+    }
+
+    .link-item a:hover { color: var(--link-hover); text-decoration: underline; }
+
+    /* ─── NO RESULTS ─── */
+    .no-results {
+      text-align: center;
+      padding: 4rem 1rem;
+      color: var(--text-muted);
+      display: none;
+    }
+
+    .no-results h3 { font-size: 1.1rem; margin-bottom: 0.4rem; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 640px) {
+      header { padding: 1.5rem 1rem 1rem; position: relative; }
+      .container { padding: 1.2rem 1rem 3rem; }
+      .categories-grid { grid-template-columns: 1fr; gap: 1rem; }
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .cat-card {
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .cat-card:nth-child(1)  { animation-delay: 0.02s; }
+    .cat-card:nth-child(2)  { animation-delay: 0.05s; }
+    .cat-card:nth-child(3)  { animation-delay: 0.08s; }
+    .cat-card:nth-child(4)  { animation-delay: 0.11s; }
+    .cat-card:nth-child(5)  { animation-delay: 0.14s; }
+    .cat-card:nth-child(6)  { animation-delay: 0.17s; }
+    .cat-card:nth-child(7)  { animation-delay: 0.20s; }
+    .cat-card:nth-child(8)  { animation-delay: 0.23s; }
+    .cat-card:nth-child(n+9){ animation-delay: 0.26s; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">📚</div>
+    <h1>Learning Tools</h1>
+  </div>
+  <p class="subtitle">Raccolta di risorse educative per maker, coding & STEAM</p>
+  <div class="search-wrap">
+    <input type="text" id="search" placeholder="Cerca una risorsa o categoria…" />
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="stats" id="stats">
+    <div class="stat-chip">Categorie: <span id="cat-count">—</span></div>
+    <div class="stat-chip">Link totali: <span id="link-count">—</span></div>
+  </div>
+
+  <div class="filter-bar" id="filter-bar"></div>
+
+  <div class="categories-grid" id="grid"></div>
+  <div class="no-results" id="no-results">
+    <h3>Nessun risultato</h3>
+    <p>Prova un termine di ricerca diverso.</p>
+  </div>
+
+</div>
+
+<footer>
+  Learning Tools &mdash; Risorse aggiornate per l'educazione digitale &amp; STEAM
+</footer>
+
+<script>
+const DATA = [
+  {
+    id: "3d-asset",
+    title: "3D Asset",
+    icon: "🧊",
+    color: "#e8f4f0",
+    links: [
+      { note: "texture", url: "https://polyhaven.com/textures" },
+      { url: "https://kaylousberg.itch.io/" },
+      { url: "https://quaternius.com/" },
+      { note: "kenney 3D", url: "https://kenney.nl/assets?q=3d" }
+    ]
+  },
+  {
+    id: "3d-coding",
+    title: "3D Coding",
+    icon: "💻",
+    color: "#eef2fb",
+    links: [
+      { note: "blockscad", url: "https://www.blockscad3d.com" }
+    ]
+  },
+  {
+    id: "3d-modeling",
+    title: "3D Modeling",
+    icon: "🔷",
+    color: "#eef2fb",
+    links: [
+      { note: "three.js", url: "https://threejs.org/" }
+    ]
+  },
+  {
+    id: "3d-printing",
+    title: "3D Printing",
+    icon: "🖨️",
+    color: "#f0f5ea",
+    links: [
+      { note: "litofanie", url: "https://tool.itslitho.com/" },
+      { url: "http://3dp.rocks/lithophane/" }
+    ]
+  },
+  {
+    id: "3d-resources",
+    title: "3D Resources",
+    icon: "🌐",
+    color: "#eef2fb",
+    links: [
+      { note: "NASA 3D models", url: "https://nasa3d.arc.nasa.gov/models" }
+    ]
+  },
+  {
+    id: "ai",
+    title: "AI",
+    icon: "🤖",
+    color: "#f5eef8",
+    subsections: [
+      {
+        label: "3D",
+        links: [
+          { note: "3D AI Studio – Text to 3D", url: "https://www.3daistudio.com/TextTo3D" }
+        ]
+      },
+      {
+        label: "Audio / Suono",
+        links: [
+          { note: "Klang – trascrizione musicale", url: "https://klang.io/it/" },
+          { note: "LOVO – voice gen TTS", url: "https://lovo.ai/" },
+          { note: "Adobe Podcast – pulizia audio", url: "https://podcast.adobe.com/enhance" },
+          { note: "Speechma – TTS", url: "https://speechma.com/" },
+          { note: "ElevenLabs – TTS", url: "https://elevenlabs.io/" },
+          { note: "Voice Cloning – HuggingFace", url: "https://huggingface.co/spaces/tonyassi/voice-clone" },
+          { note: "Vocloner", url: "https://vocloner.com/voicecloning2.php" },
+          { note: "Waveformer – text to music", url: "https://waveformer.replicate.dev/" },
+          { note: "Stable Audio", url: "https://stability.ai/stable-audio" },
+          { note: "StableAudio.com", url: "https://stableaudio.com/" },
+          { note: "Suno AI", url: "https://app.suno.ai/" }
+        ]
+      },
+      {
+        label: "Avatar",
+        links: [
+          { note: "Convai – AI Avatar", url: "https://convai.com/" }
+        ]
+      },
+      {
+        label: "Curriculum",
+        links: [
+          { note: "Common Sense – AI Literacy 6-12", url: "https://www.commonsense.org/education/collections/ai-literacy-lessons-for-grades-6-12" },
+          { note: "ML Bias – Science Buddies", url: "https://www.sciencebuddies.org/teacher-resources/lesson-plans/machine-learning-bias-faces?from=Newsletter" },
+          { note: "Corso accelerato AI – Formigoni", url: "https://iamarf.org/2024/05/06/corso-accelerato-sullai/#more-27120" },
+          { note: "Experience AI – Raspberry", url: "https://experience-ai.org/en/units/experience-ai-lessons" },
+          { note: "Techno Innovation", url: "https://technovationchallenge.org/curriculum-landing-page/" },
+          { note: "MIT AI Ethics Curriculum", url: "https://docs.google.com/document/d/1KjHic8v-kqYCCeAsdMKHo4pgCkk2mvDkkjkuAzcRNdk/edit#heading=h.pzqrhsetndn4" },
+          { note: "Day of AI", url: "https://www.dayofai.org/" },
+          { note: "AI in Education – ISTE", url: "https://www.iste.org/areas-of-focus/AI-in-education" },
+          { note: "Virgilio – Data Science", url: "https://virgili0.github.io/Virgilio/paradiso/demystification-ai-ml-dl.html#what-are-artificial-intelligence-machine-learning-and-deep-learning" }
+        ]
+      },
+      {
+        label: "Edu",
+        links: [
+          { note: "Mappa Generative AI per l'educazione", url: "https://medium.com/@LaurenceHolt/a-map-of-generative-ai-for-education-6598e85a172e" },
+          { note: "What is AI – MIT Technology Review", url: "https://www.technologyreview.com/2024/07/10/1094475/what-is-artificial-intelligence-ai-definitive-guide/" }
+        ]
+      },
+      {
+        label: "Fake & Deepfake",
+        links: [
+          { note: "Deepfake Detection – FaceOnLive", url: "https://faceonlive.com/projects/deepfake-detection-sdk/#try-panel" },
+          { note: "TheHive.ai – detection", url: "https://thehive.ai/" }
+        ]
+      },
+      {
+        label: "Font AI",
+        links: [
+          { note: "Calligrapher.ai", url: "https://www.calligrapher.ai/" },
+          { note: "FontJoy", url: "https://fontjoy.com/" },
+          { note: "AICreate Font Generator", url: "https://aicreate.com/font-generator/" },
+          { note: "AI Font Generator", url: "https://aifontgenerator.com/" },
+          { note: "Spinbot Font Generator", url: "https://spinbot.com/font-generator" }
+        ]
+      },
+      {
+        label: "Fumetti",
+        links: [
+          { note: "Comic-AI", url: "https://comic-ai.ai/" }
+        ]
+      },
+      {
+        label: "Immagini Generative",
+        links: [
+          { note: "Image Upscaler – HuggingFace", url: "https://huggingface.co/spaces/TheStinger/Ilaria_Upscaler" },
+          { note: "DeepImg.ai", url: "https://deepimg.ai/" },
+          { note: "Raphael.app", url: "https://raphael.app/it" },
+          { note: "Adobe Firefly", url: "https://firefly.adobe.com/" },
+          { note: "Recraft.ai – graphic design", url: "https://www.recraft.ai/" },
+          { note: "Fal.ai – FLUX Pro", url: "https://fal.ai/models/fal-ai/flux-pro/v1.1" },
+          { note: "Black Forest Labs", url: "https://blackforestlabs.ai/" },
+          { note: "Foto → Anime (AnimeGAN)", url: "https://huggingface.co/spaces/akhaliq/AnimeGANv2" },
+          { note: "Foto → Manga (ShojoManga)", url: "https://huggingface.co/spaces/tori29umai/Photo2ShojoManga" },
+          { note: "Leonardo.ai", url: "https://leonardo.ai/" },
+          { note: "NightCafe", url: "https://creator.nightcafe.studio/" },
+          { note: "DALL-E", url: "https://openai.com/blog/dall-e/" },
+          { note: "Hotpot.ai", url: "https://hotpot.ai/" },
+          { note: "DALL-E mini", url: "https://huggingface.co/spaces/dalle-mini/dalle-mini" },
+          { note: "Craiyon", url: "https://www.craiyon.com/" },
+          { note: "Stable Diffusion GUI", url: "https://grisk.itch.io/stable-diffusion-gui" },
+          { note: "Lexica.art", url: "https://lexica.art/" },
+          { note: "Video intro (YouTube)", url: "https://youtu.be/0zQyCihHjQU" },
+          { note: "Playground AI", url: "https://playgroundai.com/" },
+          { note: "Mage.space", url: "https://www.mage.space/" },
+          { note: "Stable Cascade – HuggingFace", url: "https://huggingface.co/spaces/multimodalart/stable-cascade" },
+          { note: "Playground v2.5 – HuggingFace", url: "https://huggingface.co/spaces/playgroundai/playground-v2.5" },
+          { note: "Tengr.ai", url: "https://tengr.ai/" },
+          { note: "StarryAI", url: "https://starryai.com/" },
+          { note: "Reimagine XL – ClipDrop", url: "https://clipdrop.co/stable-diffusion-reimagine" },
+          { note: "Fooocus (free)", url: "https://www.fooocus.cc/" },
+          { note: "Image Gen – MIT CV", url: "https://image-gen.github.io/" },
+          { note: "SkyBox Lab img 360°", url: "https://skybox.blockadelabs.com/" },
+          { note: "HDRI to CubeMap", url: "https://matheowis.github.io/HDRI-to-CubeMap/" },
+          { note: "Ideogram.ai", url: "https://ideogram.ai/t/trending" },
+          { note: "Dream.ai", url: "https://dream.ai/create" },
+          { note: "FLUX.1-dev – HuggingFace", url: "https://huggingface.co/spaces/black-forest-labs/FLUX.1-dev" },
+          { note: "GetImg.ai", url: "https://getimg.ai/home" }
+        ]
+      },
+      {
+        label: "LLM",
+        links: [
+          { note: "Bard / Gemini", url: "https://bard.google.com/" },
+          { note: "Chatgot", url: "https://www.chatgot.io/" },
+          { note: "Mixtral 46.7B – HuggingFace", url: "https://huggingface.co/spaces/ehristoforu/mixtral-46.7b-chat" },
+          { note: "HuggingFace Chat", url: "https://huggingface.co/chat/" },
+          { note: "Mizou", url: "https://mizou.com/" },
+          { note: "PopAI Pro", url: "https://www.popai.pro/" },
+          { note: "OpenAI Tokenizer", url: "https://platform.openai.com/tokenizer" },
+          { note: "LLM Token Counter", url: "https://llmtokencounter.com/" },
+          { note: "Tokenizer Playground – HuggingFace", url: "https://huggingface.co/spaces/Xenova/the-tokenizer-playground" },
+          { note: "How GPT-3 works (animazioni)", url: "https://jalammar.github.io/how-gpt3-works-visualizations-animations/" },
+          { note: "StudyChat", url: "https://www.studychat.app/" },
+          { note: "NotebookLM – Google", url: "https://notebooklm.google/" },
+          { note: "ChatterBot Python", url: "https://chatterbot.readthedocs.io/en/stable/" },
+          { note: "Minerva LLM", url: "https://minerva-llm.org/" },
+          { note: "Prompt Engineering – Anthropic", url: "https://docs.anthropic.com/it/docs/build-with-claude/prompt-engineering/overview" },
+          { note: "Prompt Tutorial – GitHub Anthropic", url: "https://github.com/anthropics/prompt-eng-interactive-tutorial" }
+        ]
+      },
+      {
+        label: "Machine Learning",
+        links: [
+          { note: "Teachable Machine", url: "https://teachablemachine.withgoogle.com/" },
+          { note: "Lobe.ai", url: "https://www.lobe.ai/" },
+          { note: "LearningML editor", url: "https://basic.learningml.org/editor/" },
+          { note: "Adacraft – Blocks", url: "https://www.adacraft.org/" },
+          { note: "Vittascience", url: "https://en.vittascience.com/" },
+          { note: "PictoBlox AI", url: "https://pictoblox.ai/" },
+          { note: "Wekinator (offline)", url: "http://www.wekinator.org/" },
+          { note: "Dale Lane Blog", url: "http://dalelane.co.uk/blog/?p=3513" },
+          { note: "Deep Neural Network – spiegato semplice", url: "https://medium.com/@vijay.betigiri/deep-neural-network-explain-like-im-five-6592e9c19a8c" }
+        ]
+      },
+      {
+        label: "Math AI",
+        links: [
+          { note: "Math AI – ChatGPT", url: "https://chatgpt.com/g/g-2OyX2ZiUk-math-ai" }
+        ]
+      },
+      {
+        label: "P5.js & AI",
+        links: [
+          { url: "https://processing-with-ai.gitlab.io/" },
+          { note: "p5.js deploy ML", url: "https://medium.com/@tenzinjinsel/using-p5js-deploy-your-machine-learning-project-easy-and-fast-9996400679d5" },
+          { note: "MIT FutureMakers", url: "https://medium.com/mit-media-lab/mits-futuremakers-programs-help-kids-get-their-minds-around-and-hands-on-ai-c4426737a9c7" },
+          { note: "Gesture Controlled Flower – ML5", url: "https://naziafakhruddin.medium.com/gesture-controlled-flower-art-with-ml5-js-posenet-and-p5-js-61b98fa3fc68" }
+        ]
+      },
+      {
+        label: "Progetti AI",
+        links: [
+          { note: "AI Science Projects – Science Buddies", url: "https://www.sciencebuddies.org/blog/artificial-intelligence-ai-science-projects" }
+        ]
+      },
+      {
+        label: "Robot",
+        links: [
+          { note: "Make AI Robots", url: "https://makeairobots.com/" }
+        ]
+      },
+      {
+        label: "Scratch & AI",
+        links: [
+          { note: "TM2Scratch", url: "https://champierre.github.io/tm2scratch/" },
+          { note: "Vittascience", url: "https://en.vittascience.com/" },
+          { note: "Adacraft", url: "https://www.adacraft.org/" },
+          { note: "Cognimates", url: "https://hackidemia.github.io/cognimates-website/home/" },
+          { note: "Scratch Lab", url: "https://lab.scratch.mit.edu/" },
+          { note: "Machine Learning for Kids", url: "https://machinelearningforkids.co.uk/" },
+          { note: "AI Blocks – MIT", url: "https://www.media.mit.edu/posts/ai-blocks/" },
+          { note: "ML for Beginners – Microsoft", url: "https://github.com/cyberparra/ML-For-Beginners/blob/main/1-Introduction/1-intro-to-ML/README.md" },
+          { note: "Dancing with AI", url: "https://dancingwithai.media.mit.edu/" },
+          { note: "WeTurtle – Scratch AI", url: "https://www.weturtle.org/dettaglio-progetti/99/una-classe-intelligente-con-scratch-3.html" },
+          { note: "LearningML editor", url: "https://basic.learningml.org/editor/" }
+        ]
+      },
+      {
+        label: "Tools AI",
+        links: [
+          { note: "WhyBot – le domande", url: "https://whybot-khaki.vercel.app/" },
+          { note: "Manus.im", url: "https://manus.im/app" },
+          { note: "Tasmap – mappe", url: "https://tasmap.app/" },
+          { note: "Remove BG – HuggingFace", url: "https://huggingface.co/spaces/Xenova/remove-background-web" },
+          { note: "Remove.bg", url: "https://www.remove.bg/" },
+          { note: "Reduce Images – resize", url: "https://www.reduceimages.com/" },
+          { note: "Image restoration (Colab)", url: "https://colab.research.google.com/drive/1sVsoBd9AjckIXThgtZhGrHRfFI6UUYOo" },
+          { note: "Video translate – HeyGen", url: "https://labs.heygen.com/video-translate" },
+          { note: "AI hands-on – lista tools", url: "https://www.massimocanducci.eu/ai-hands-on/" },
+          { note: "Animated drawings – Meta", url: "https://sketch.metademolab.com/canvas" },
+          { note: "Da immagine a prompt – CLIP", url: "https://huggingface.co/spaces/pharmapsychotic/CLIP-Interrogator" },
+          { note: "TextReader.ai", url: "https://textreader.ai/" },
+          { note: "AudioPen – da voce a testo", url: "https://audiopen.ai/" },
+          { note: "SuperMeme", url: "https://www.supermeme.ai/" },
+          { note: "Gamma – presentazioni AI", url: "https://gamma.app/" },
+          { note: "Jeda.ai – transform with AI", url: "https://www.jeda.ai/" },
+          { note: "MyLens – timeline", url: "https://mylens.ai/" },
+          { note: "Character.ai", url: "https://character.ai/" },
+          { note: "Risorse INDIRE", url: "https://lab.indire.it/risorse" },
+          { note: "Risorse varie – IAperTutti", url: "https://iapertutti.it/risorse-gratuite-iapertutti/" }
+        ]
+      },
+      {
+        label: "Video AI",
+        links: [
+          { note: "LTX Studio", url: "https://ltx.studio/" },
+          { note: "Vidnoz", url: "https://it.vidnoz.com/" },
+          { note: "Veed.io", url: "https://www.veed.io/" },
+          { note: "Hedra", url: "https://www.hedra.com/" },
+          { note: "Luma Dream Machine", url: "https://lumalabs.ai/dream-machine" }
+        ]
+      },
+      {
+        label: "Articoli & Documenti",
+        links: [
+          { note: "Ex Machina – Asimmetrie", url: "https://www.asimmetrie.it/ex-machina/" },
+          { note: "Neural Network spiegata – TDS", url: "https://towardsdatascience.com/first-neural-network-for-beginners-explained-with-code-4cfd37e06eaf" },
+          { note: "Deep NN pesi spiegati semplice", url: "https://medium.com/@vijay.betigiri/deep-neural-network-explain-like-im-five-6592e9c19a8c" },
+          { note: "What is AI – MIT Tech Review", url: "https://www.technologyreview.com/2024/07/10/1094475/what-is-artificial-intelligence-ai-definitive-guide/" },
+          { note: "Dizionario AI – The Verge", url: "https://www.theverge.com/24201441/ai-terminology-explained-humans" },
+          { note: "AI svela tecnica Raffaello – ANSA", url: "https://www.ansa.it/canale_scienza/notizie/scienza_arte/2024/09/27/lia-svela-la-tecnica-pittorica-di-raffaello-nella-pala-baronci-_78cd038c-153d-478e-b54f-3f3bad8570f7.html" },
+          { note: "Geoglifi Nazca e droni – Il Post", url: "https://www.ilpost.it/2024/09/27/geoglifi-nazca-droni-intelligenza-artificiale/" },
+          { note: "Generative AI per principianti", url: "https://medium.com/@raja.gupta20/generative-ai-for-beginners-part-1-introduction-to-ai-eadb5a71f07d" },
+          { note: "Come creare un podcast con NotebookLM", url: "https://recast.studio/blog/how-to-create-notebook-lm-podcast" }
+        ]
+      }
+    ]
+  },
+  {
+    id: "algoritmi",
+    title: "Algoritmi",
+    icon: "🔗",
+    color: "#fef9ec",
+    links: [
+      { note: "VisuAlgo", url: "https://visualgo.net/en" }
+    ]
+  },
+  {
+    id: "api",
+    title: "API",
+    icon: "🔌",
+    color: "#eef2fb",
+    links: [
+      { note: "Free public APIs", url: "https://github.com/public-apis/public-apis" }
+    ]
+  },
+  {
+    id: "arduino",
+    title: "Arduino",
+    icon: "⚙️",
+    color: "#e8f5e9",
+    links: [
+      { note: "Project Hub – Education", url: "https://create.arduino.cc/projecthub/projects/tags/education" },
+      { note: "Hackster.io", url: "https://www.hackster.io/arduino?ref=topnav" },
+      { note: "Arduino Cookbook", url: "https://github.com/zmaker/arduino_cookbook" },
+      { note: "Arduino R4 WiFi – Getting Started", url: "https://docs.arduino.cc/tutorials/uno-r4-wifi/r4-wifi-getting-started" },
+      { note: "Arduino R4 WiFi – Examples", url: "https://docs.arduino.cc/tutorials/uno-r4-wifi/wifi-examples" },
+      { note: "Self-driving car", url: "https://www.sciencebuddies.org/teacher-resources/lesson-plans/arduino-self-driving-car" },
+      { note: "LED Matrix Editor", url: "https://ledmatrix-editor.arduino.cc/" }
+    ]
+  },
+  {
+    id: "arte-generativa",
+    title: "Arte Generativa",
+    icon: "🎨",
+    color: "#fdf2f8",
+    links: [
+      { note: "Pencil Code", url: "https://pencilcode.net/edit/first" },
+      { note: "Genart – UniUD", url: "https://users.dimi.uniud.it/~massimo.franceschet/processing/teaching/seminario/genart.html" },
+      { note: "Intro to Generative Art – freeCodeCamp", url: "https://medium.freecodecamp.org/an-introduction-to-generative-art-what-it-is-and-how-you-make-it-b0b363b50a70" }
+    ]
+  },
+  {
+    id: "automata",
+    title: "Automata",
+    icon: "⚙️",
+    color: "#fef9ec",
+    links: [
+      { note: "Mechanical Toys", url: "http://www.mechanical-toys.com/" },
+      { note: "Cranky Contraption", url: "https://toddburleson.com/2018/04/12/cranky-contraption-exploration/" },
+      { note: "Walter Ruffler Mechanisms", url: "http://www.walterruffler.de/Mechanic.html" },
+      { note: "Wooden Clocks", url: "https://woodenclocks.co.uk/" },
+      { note: "Paperpino", url: "http://www.paperpino.net/" },
+      { note: "Cardboard – Adafruit", url: "https://learn.adafruit.com/search?q=cardboard&p=0" },
+      { note: "Mechanism LaunchBot (YouTube)", url: "https://youtu.be/AQxdTrZ1Y_k" },
+      { note: "Hummingbird Kit Curricula", url: "https://hummingbirdkit.com/teaching/curricula" }
+    ]
+  },
+  {
+    id: "blockchain",
+    title: "Blockchain",
+    icon: "🔐",
+    color: "#eef2fb",
+    links: [
+      { note: "TxStreet – ETH/BTC", url: "https://txstreet.com/v/eth-btc" },
+      { note: "Blockchain Demo", url: "https://andersbrownworth.com/blockchain/" }
+    ]
+  },
+  {
+    id: "chain-reaction",
+    title: "Chain Reaction",
+    icon: "⛓️",
+    color: "#fef9ec",
+    links: [
+      { note: "Modular Design Cards", url: "http://fellows.fablearn.org/modular-design-cards-for-building-a-chain-reaction/" }
+    ]
+  },
+  {
+    id: "coding",
+    title: "Coding",
+    icon: "🖥️",
+    color: "#e8f5e9",
+    links: [
+      { note: "Vittascience", url: "https://en.vittascience.com/" },
+      { note: "Raspberry Pi Editor", url: "https://editor.raspberrypi.org/en/" },
+      { note: "CodeCombat", url: "http://codecombat.com/" },
+      { note: "Codewars", url: "http://codewars.com/" },
+      { note: "CodinGame", url: "https://www.codingame.com/home" },
+      { note: "Scratch Getting Unstuck", url: "https://sites.google.com/view/scratchpals/resources/getting-unstuck-challenges" },
+      { note: "Scratch Code Generator", url: "https://zak.io/post/2019/04/14/scratch-blocks-generator/" },
+      { note: "The Nature of Code", url: "https://natureofcode.com/book/" },
+      { note: "CodeGuppy – p5.js facilitato", url: "https://codeguppy.com/" },
+      { note: "Glitch – web coding", url: "https://glitch.com/" },
+      { note: "Scratch Challenge", url: "https://panchatantraprogramming.com/1-scratch-challenge-a-day/" },
+      { note: "Scratch Lab", url: "https://lab.scratch.mit.edu/" },
+      { note: "Peblio – coding tutorial", url: "https://www.peblio.co/" },
+      { note: "Python course – playbackpress", url: "https://playbackpress.com/books/pybook/chapter/1/1?event=224" }
+    ]
+  },
+  {
+    id: "crittografia",
+    title: "Crittografia",
+    icon: "🔑",
+    color: "#f5eef8",
+    links: [
+      { note: "Codes for Scouts", url: "https://sites.google.com/site/codesforscouts/" }
+    ]
+  },
+  {
+    id: "curriculum",
+    title: "Curriculum",
+    icon: "📋",
+    color: "#fef9ec",
+    links: [
+      { note: "101Computing", url: "http://www.101computing.net/" },
+      { note: "LEGO Education", url: "https://education.lego.com/en-us" },
+      { note: "Common Sense Education", url: "https://www.commonsense.org/education/website/tinkercad/flows" },
+      { note: "Craft-Ed", url: "http://craft-ed.sssm.it/" },
+      { note: "PhET Simulations", url: "https://phet.colorado.edu/en/simulations/category/by-level/middle-school" },
+      { note: "CS First – Google", url: "https://csfirst.withgoogle.com/materials" },
+      { note: "PLTW Gateway", url: "https://www.pltw.org/our-programs/pltw-gateway-curriculum#curriculum-4" },
+      { note: "CS Field Guide", url: "http://csfieldguide.org.nz/en/about.html" },
+      { note: "Stempedia", url: "https://thestempedia.com/" },
+      { note: "Programma il Futuro", url: "https://programmailfuturo.it/notizie/webinar" }
+    ]
+  },
+  {
+    id: "dataset",
+    title: "Dataset",
+    icon: "📊",
+    color: "#e8f5e9",
+    links: [
+      { note: "Our World in Data", url: "https://ourworldindata.org/" },
+      { note: "Kaggle Datasets", url: "https://www.kaggle.com/datasets" },
+      { note: "WHO Gateway Datasets", url: "https://gateway.euro.who.int/en/datasets/" },
+      { note: "WHO Mortality Database", url: "https://gateway.euro.who.int/en/datasets/european-mortality-database/" },
+      { note: "data.europa.eu – mortality", url: "https://data.europa.eu/data/datasets?query=mortality&locale=en" },
+      { note: "OpenWeatherMap – Air Pollution", url: "https://openweathermap.org/api/air-pollution" }
+    ]
+  },
+  {
+    id: "data-viz",
+    title: "Data Visualization",
+    icon: "📈",
+    color: "#eef2fb",
+    links: [
+      { note: "Guida Data Visualization", url: "https://www.digital4.biz/executive/data-visualization-cosa-e-come-farla-e-software-migliori/" },
+      { note: "Datawrapper", url: "https://www.datawrapper.de/" },
+      { note: "Flourish Studio", url: "https://flourish.studio/" }
+    ]
+  },
+  {
+    id: "drawing-robots",
+    title: "Drawing Robots",
+    icon: "🤖",
+    color: "#f5eef8",
+    links: [
+      { note: "Robot Archaeology – Adafruit", url: "https://blog.adafruit.com/2018/05/22/robot-archaeology-drawing-robots-robots/" }
+    ]
+  },
+  {
+    id: "electronic",
+    title: "Elettronica",
+    icon: "⚡",
+    color: "#fef9ec",
+    links: [
+      { note: "Cirkit Studio", url: "https://www.cirkitstudio.com/" },
+      { note: "OpenCircuit (acquisto)", url: "https://opencircu.it/" },
+      { note: "Transistor as Switch", url: "https://learn.sparkfun.com/tutorials/transistors/applications-i-switches" },
+      { note: "YouTube playlist edu", url: "https://www.youtube.com/playlist?list=PL9_01HM23dGEDNNfR6BtlDWD8DDoAcLOT" },
+      { note: "Motor Driver L293D", url: "http://www.instructables.com/id/How-to-Make-L293D-Motor-Driver-Board/" },
+      { note: "ESP8266 Tuniot", url: "http://easycoding.tn/tuniot/demos/code/" },
+      { note: "Apertura cancello IoT ESP8266", url: "https://www.sgart.it/IT/elettro/apertura-cencello-iot-controllato-via-wi-fi-esp8266/post" },
+      { note: "Google Home + ESP8266", url: "https://farelettronica.it/web/esp8266-mqtt-e-google-home-scheda-di-controllo-base-per-la-domotica-diy/" },
+      { note: "ESP8266 + Google Assistant (YouTube)", url: "https://youtu.be/9aVOFCiNqtw" },
+      { note: "ESP32 Buyer's Guide", url: "https://eitherway.io/posts/esp32-buyers-guide/" }
+    ]
+  },
+  {
+    id: "escape-room",
+    title: "Escape Room",
+    icon: "🔓",
+    color: "#fdf2f8",
+    links: [
+      { note: "Weturtle – Escape Room in classe", url: "https://www.weturtle.org/dettaglio-progetti/103/enigmi-e-rompicapo-in-classe-costruiamo-un-escape.html" },
+      { note: "Deck.toys Gallery", url: "https://deck.toys/gallery#q/lessonName=&page=0&subjects=sci&decks=fav-month" }
+    ]
+  },
+  {
+    id: "fake",
+    title: "Fake (educativo)",
+    icon: "🎭",
+    color: "#f5eef8",
+    links: [
+      { note: "Fake Tweet Generator", url: "https://generatestatus.com/fake-tweet-generator/" },
+      { note: "FakeInfo.net", url: "https://fakeinfo.net/" }
+    ]
+  },
+  {
+    id: "fisica",
+    title: "Fisica",
+    icon: "🔭",
+    color: "#eef2fb",
+    links: [
+      { note: "Vieyra Software Lessons", url: "https://www.vieyrasoftware.net/browse-lessons" }
+    ]
+  },
+  {
+    id: "geo",
+    title: "Geo / Geolocalizzazione",
+    icon: "🗺️",
+    color: "#e8f5e9",
+    links: [
+      { note: "Nominatim API", url: "https://nominatim.org/release-docs/develop/api/Overview/" },
+      { note: "OpenRefine Geocode", url: "https://opensas.wordpress.com/2013/06/30/using-openrefine-to-geocode-your-data-using-google-and-openstreetmap-api/" }
+    ]
+  },
+  {
+    id: "generatori",
+    title: "Generatori",
+    icon: "🎲",
+    color: "#fef9ec",
+    links: [
+      { note: "Generatore griglie", url: "https://incompetech.com/graphpaper/" },
+      { note: "TweetGen – fake tweet", url: "https://www.tweetgen.com/create/tweet.html" },
+      { note: "FakeInfo.net", url: "https://fakeinfo.net/" }
+    ]
+  },
+  {
+    id: "grafica",
+    title: "Grafica",
+    icon: "🖼️",
+    color: "#fdf2f8",
+    links: [
+      { note: "Photopea (GIMP online)", url: "https://www.photopea.com/" },
+      { note: "SVG online – Sketch.io", url: "https://sketch.io/sketchpad/" }
+    ]
+  },
+  {
+    id: "immagini",
+    title: "Immagini",
+    icon: "🖼️",
+    color: "#fdf2f8",
+    links: [
+      { note: "PNG img", url: "https://pngimg.com/" }
+    ]
+  },
+  {
+    id: "iot",
+    title: "IoT",
+    icon: "📡",
+    color: "#e8f5e9",
+    links: [
+      { note: "ThingSpeak", url: "https://thingspeak.com/" },
+      { note: "Micro:bit → IoT Platform", url: "https://www.elecfreaks.com/store/blog/post/how-to-send-microbit-data-to-iot-platform.html" },
+      { note: "ESP8266 ThingSpeak PXT", url: "https://github.com/alankrantas/pxt-ESP8266_ThingSpeak" },
+      { note: "OpenHAB", url: "https://www.openhab.org/" },
+      { note: "Home Assistant", url: "https://www.home-assistant.io/" },
+      { note: "Domoticz", url: "https://www.domoticz.com/" }
+    ]
+  },
+  {
+    id: "lego",
+    title: "LEGO",
+    icon: "🧱",
+    color: "#fff3e0",
+    links: [
+      { note: "Build with Chrome", url: "https://www.buildwithchrome.com/" },
+      { note: "Mecabricks", url: "https://www.mecabricks.com/en/account/library" },
+      { note: "Studio Bricklink", url: "https://studio.bricklink.com" },
+      { note: "LEGO Dimensions Measurements", url: "http://www.robertcailliau.eu/Lego/Dimensions/zMeasurements-en.xhtml" },
+      { note: "LEGO Curriculum Doc", url: "https://docs.google.com/document/d/1SUIrgf1P7OwH2d2IJAulyFWJfbIPvNiB4nJ2nO4mD6o/pub" },
+      { note: "Machine Lessons – LEGO Edu", url: "https://education.lego.com/en-us/support/machines-and-mechanisms/sample-lesson" },
+      { note: "Ingranaggi – WeTurtle", url: "http://www.weturtle.org/project-detail.php?id=16" },
+      { note: "Python per EV3", url: "https://education.lego.com/en-us/support/mindstorms-ev3/python-for-ev3" }
+    ]
+  },
+  {
+    id: "ml",
+    title: "Machine Learning",
+    icon: "🧠",
+    color: "#f5eef8",
+    links: [
+      { note: "Adacraft", url: "https://www.adacraft.org/" },
+      { note: "Vittascience", url: "https://en.vittascience.com/" },
+      { note: "Wekinator", url: "http://www.wekinator.org/" },
+      { note: "WeTurtle – Scratch AI", url: "https://www.weturtle.org/dettaglio-progetti/99/una-classe-intelligente-con-scratch-3.html" },
+      { note: "Machine Learning for Kids", url: "https://machinelearningforkids.co.uk/" },
+      { note: "Dale Lane Blog", url: "http://dalelane.co.uk/blog/?p=3513" },
+      { note: "AI World School", url: "https://aiworldschool.com/freeplay/" },
+      { note: "TM2Scratch", url: "https://champierre.github.io/tm2scratch/" }
+    ]
+  },
+  {
+    id: "make",
+    title: "Make / Maker",
+    icon: "🔧",
+    color: "#fef9ec",
+    links: [
+      { note: "Mini LED Flashlight", url: "http://www.instructables.com/id/Mini-LED-flashlight/" },
+      { note: "Solenoid Engine", url: "http://www.instructables.com/id/How-to-Make-Solenoid-Engine/step4/Procedure/" },
+      { note: "Silver Soldering", url: "http://www.instructables.com/id/Basic-Silver-Soldering-With-Durable-Joints/" },
+      { note: "Maker Projects for Kids", url: "https://www.makerspaces.com/25-makerspace-projects-for-kids/" },
+      { note: "Make AI Robots", url: "https://makeairobots.com/" }
+    ]
+  },
+  {
+    id: "math",
+    title: "Matematica",
+    icon: "📐",
+    color: "#eef2fb",
+    links: [
+      { note: "Desmos", url: "https://www.desmos.com" },
+      { note: "Scratch & Math", url: "https://www.readysteadycode.ie/magic-maths/" },
+      { note: "Sphericon", url: "http://www.mathias.org/steve/sphericons/series.htm" },
+      { note: "MathsPad Construct", url: "https://www.mathspad.co.uk/i2/construct.php" },
+      { note: "DataTab", url: "https://datatab.net/" }
+    ]
+  },
+  {
+    id: "meccanica",
+    title: "Meccanica",
+    icon: "⚙️",
+    color: "#fef9ec",
+    links: [
+      { note: "Ingranaggi – Ciechanow.ski", url: "https://ciechanow.ski/gears/" }
+    ]
+  },
+  {
+    id: "metaverso",
+    title: "Metaverso",
+    icon: "🌐",
+    color: "#eef2fb",
+    links: [
+      { note: "WorkAdventure (metaverso 2D)", url: "https://workadventu.re/" },
+      { note: "ReadyPlayer.me", url: "https://readyplayer.me/" },
+      { note: "Avatar Maker", url: "https://avatarmaker.com/" },
+      { note: "Tiled – editor mappe", url: "https://doc.mapeditor.org/en/stable/manual/introduction/#about-tiled" },
+      { note: "CB Insights Metaverse Map", url: "https://www.cbinsights.com/research/metaverse-market-map/" }
+    ]
+  },
+  {
+    id: "microbit",
+    title: "Micro:bit",
+    icon: "🔬",
+    color: "#e8f5e9",
+    links: [
+      { note: "Bluetooth MDW", url: "http://bluetooth-mdw.blogspot.it/p/bbc-microbit.html#hex_files" },
+      { note: "Animated Microbook", url: "http://make.techwillsaveus.com/bbc-microbit/activities/animated-microbook" },
+      { note: "101Computing Micro:bit", url: "http://www.101computing.net/category/bbc-microbit/" },
+      { note: "Code.org Fundamentals", url: "http://microbit.org/teach/code-org-fundamentals/" },
+      { note: "PLTW Gateway Curriculum", url: "https://www.pltw.org/our-programs/pltw-gateway-curriculum#curriculum-4" },
+      { note: "Teach with ICT", url: "http://www.teachwithict.com/physical-computing.html" },
+      { note: "MakeCode Projects", url: "https://makecode.microbit.org/projects/" },
+      { note: "BLE Profile – GitHub", url: "https://ukbaz.github.io/howto/ubit_ble_profile.html" },
+      { note: "Bitty Data Logger", url: "http://www.bittysoftware.com/tutorials/bitty_data_logger_pxt.html" },
+      { note: "Tech Will Save Us", url: "http://make.techwillsaveus.com/" },
+      { note: "Doctor Who BBC", url: "http://www.bbc.co.uk/programmes/articles/GDNGTpkHJrDJSYMQJbH9f1/tackle-time-and-space-with-doctor-who-and-the-bbc-micro-bit" },
+      { note: "BlockyTalkyBLE", url: "http://www.playfulcomputation.group/blockytalkyble.html" },
+      { note: "microBit.js", url: "https://github.com/antefact/microBit.js" },
+      { note: "Intruder Detection – Tinkercademy", url: "https://tinkercademy.com/tutorials/intruder-detection/" },
+      { note: "Awesome Micro:bit", url: "https://github.com/carlosperate/awesome-microbit" },
+      { note: "Micro:bit con Arduino", url: "https://learn.adafruit.com/use-micro-bit-with-arduino/install-board-and-blink?view=all" },
+      { note: "Neural Network su Micro:bit (1)", url: "http://robotsandphysicalcomputing.blogspot.com/2018/03/microbit-neuron-producing-single-neuron.html" },
+      { note: "Neural Network su Micro:bit (2)", url: "http://robotsandphysicalcomputing.blogspot.com/2018/04/microbit-neural-network.html" },
+      { note: "YouTube – Neural", url: "https://www.youtube.com/watch?v=tsYr01lQ_HY" },
+      { note: "Thermal Printer", url: "http://www.suppertime.co.uk/blogmywiki/2016/12/microbit-thermal/" },
+      { note: "Micro:bit Teach", url: "https://microbit.org/teach/" },
+      { note: "Python Micro:bit", url: "https://microbit.org/testing/#python" },
+      { note: "Weather Station", url: "https://microbit.org/news/2020-07-06/make-a-microbit-weather-station/" },
+      { note: "Radio Networks Course", url: "https://microbit.thinkific.com/courses/networks-with-radio-communication" }
+    ]
+  },
+  {
+    id: "mindstorm",
+    title: "LEGO Mindstorm",
+    icon: "🤖",
+    color: "#e8f5e9",
+    links: [
+      { note: "EV3 Lessons IT", url: "http://ev3lessons.com/it/Lessons.html?tab=advanced" },
+      { note: "Python per EV3", url: "https://education.lego.com/en-us/support/mindstorms-ev3/python-for-ev3" },
+      { note: "Mindstorm EV3 Downloads", url: "https://education.lego.com/en-us/downloads/mindstorms-ev3" },
+      { note: "Vernier STEM Books", url: "https://www.vernier.com/products/books/stem/" }
+    ]
+  },
+  {
+    id: "music",
+    title: "Musica & Suoni",
+    icon: "🎵",
+    color: "#fdf2f8",
+    links: [
+      { note: "Wakelet Music", url: "https://wakelet.com/wake/7bHfbtWJ97-q15yZxXXuv" },
+      { note: "Sonic Pi", url: "https://projects.raspberrypi.org/en/projects/getting-started-with-sonic-pi/6" },
+      { note: "Free Music Archive", url: "https://freemusicarchive.org/search" },
+      { note: "SoundBible", url: "https://soundbible.com/" },
+      { note: "BBC Sound Effects", url: "https://sound-effects.bbcrewind.co.uk/search" }
+    ]
+  },
+  {
+    id: "node-red",
+    title: "Node-RED",
+    icon: "🔴",
+    color: "#fef9ec",
+    links: [
+      { note: "World Map Node", url: "https://flows.nodered.org/node/node-red-contrib-web-worldmap" }
+    ]
+  },
+  {
+    id: "p5js",
+    title: "P5.js",
+    icon: "🎨",
+    color: "#fff3e0",
+    links: [
+      { note: "My P5 Sketch – GitHub", url: "https://cyberparra.github.io/P5-Sketch/" },
+      { note: "Generative Gestaltung", url: "http://www.generative-gestaltung.de/2/" },
+      { note: "p5.play – Making Games", url: "https://creative-coding.decontextualize.com/making-games-with-p5-play/" },
+      { note: "Make your first game p5.js", url: "https://medium.com/@kellylougheed/make-your-first-game-with-p5-js-38bfb308a671" },
+      { note: "p5.play Examples", url: "http://molleindustria.github.io/p5.play/" },
+      { note: "Fal-Works", url: "https://www.fal-works.com/" },
+      { note: "2D texture on 3D shape", url: "https://naziafakhruddin.medium.com/creating-2d-texture-on-a-3d-shape-in-p5-js-8ee8bfbfee4" },
+      { note: "Gesture Controlled Flower – ML5", url: "https://naziafakhruddin.medium.com/gesture-controlled-flower-art-with-ml5-js-posenet-and-p5-js-61b98fa3fc68" },
+      { note: "Deploy ML con p5.js", url: "https://medium.com/@tenzinjinsel/using-p5js-deploy-your-machine-learning-project-easy-and-fast-9996400679d5" },
+      { note: "Instagram Filters JS", url: "https://codeburst.io/instagram-filters-with-javascript-p5-js-83f28c9f7fda" },
+      { note: "Turtle.js – Compform", url: "https://compform.net/turtles/turtle/turtle.html" },
+      { note: "p5.turtle.js – GitHub", url: "https://github.com/ycatch/p5.turtle.js" },
+      { note: "Turtletoy", url: "https://turtletoy.net/turtle/new" },
+      { note: "Summer Camp Kids", url: "https://davebsoft.com/programming-for-kids/classes/athenian/summer/2019/" },
+      { note: "Math with p5 – MIT", url: "https://medium.com/processing-foundation/p5-teach-teaching-math-through-animations-and-simulations-64b6159fef85" },
+      { note: "Breaksome.tech – coding", url: "https://breaksome.tech/category/coding/page/5/" },
+      { note: "Dragon Curve p5.js", url: "https://breaksome.tech/coding-a-dragon-curve-in-p5js/" },
+      { note: "Starter Kit Teaching p5", url: "http://teach.angichau.com/starter-kit-for-teaching-with-p5-js/drawing-colors-collapsible/" },
+      { note: "Code Decolonized Symposium", url: "https://medium.com/@ProcessingOrg/code-decolonized-x-powrplnt-symposium-2022-6433cc84e9c3" },
+      { note: "Art AI Flower – Digital Moment", url: "https://resources.digitalmoment.org/algorithmic-art-using-p5.js-ai-flower/" }
+    ]
+  },
+  {
+    id: "paper-circuits",
+    title: "Paper Circuits",
+    icon: "📜",
+    color: "#fef9ec",
+    links: [
+      { note: "Tinker Studio", url: "https://tinker-studio.weebly.com/paper-circuits.html" }
+    ]
+  },
+  {
+    id: "pixel-art",
+    title: "Pixel Art",
+    icon: "🟦",
+    color: "#eef2fb",
+    links: [
+      { note: "Piskel", url: "https://www.piskelapp.com/" },
+      { note: "Pixilart", url: "https://www.pixilart.com/draw" }
+    ]
+  },
+  {
+    id: "portfolio",
+    title: "Portfolio",
+    icon: "📁",
+    color: "#f5eef8",
+    links: [
+      { note: "Maker Ed Books", url: "http://makered.org/get-involved/buy-our-books/" },
+      { note: "Maker Ed Publications", url: "http://makered.org/opp/publications/" },
+      { note: "Open Portfolios Guide (PDF)", url: "http://makered.org/wp-content/uploads/2016/11/Maker-Ed-OPP-A-Practical-Guide-to-Open-Portfolios_final.pdf" }
+    ]
+  },
+  {
+    id: "python",
+    title: "Python",
+    icon: "🐍",
+    color: "#e8f5e9",
+    links: [
+      { note: "Python Turtle Academy", url: "https://pythonturtle.academy/" },
+      { note: "Python Turtle Docs", url: "https://docs.python.org/3.3/library/turtle.html?highlight=turtle" },
+      { note: "Trinket.io", url: "https://trinket.io/" },
+      { note: "Raspberry Pi Projects", url: "https://projects.raspberrypi.org/en/projects" }
+    ]
+  },
+  {
+    id: "qr-code",
+    title: "QR Code",
+    icon: "📱",
+    color: "#f5eef8",
+    links: [
+      { note: "QR Generator", url: "https://qr.devol.it/" }
+    ]
+  },
+  {
+    id: "raspberry",
+    title: "Raspberry Pi",
+    icon: "🍓",
+    color: "#fdf2f8",
+    links: [
+      { note: "Hello World", url: "https://projects.raspberrypi.org/en/projects/hello-world/1" },
+      { note: "Trinket Sense HAT", url: "https://trinket.io/sense-hat" },
+      { note: "Pi Camera AI", url: "https://www.raspberrypi.com/news/how-to-get-started-with-your-raspberry-pi-ai-camera/" },
+      { note: "Python Projects with Source", url: "https://thecleverprogrammer.com/2021/01/14/python-projects-with-source-code/" }
+    ]
+  },
+  {
+    id: "robotic",
+    title: "Robotica",
+    icon: "🤖",
+    color: "#e8f5e9",
+    links: [
+      { note: "MIT Distributed Robotics Lab", url: "http://groups.csail.mit.edu/drl/wiki/index.php?title=Main_Page" },
+      { note: "Configurazioni Manipolatori", url: "https://www.meccanismocomplesso.org/i-manipolatori-le-configurazioni-piu-comuni/#" },
+      { note: "Make AI Robots", url: "https://makeairobots.com/" }
+    ]
+  },
+  {
+    id: "simulatori",
+    title: "Simulatori",
+    icon: "🎮",
+    color: "#fef9ec",
+    links: [
+      { note: "Sandspiel", url: "https://sandspiel.club/" },
+      { note: "Cyberbotics – Robot Simulator", url: "https://cyberbotics.com/#features" },
+      { note: "VEX VR (Scratch-like 3D)", url: "https://vr.vex.com/" },
+      { note: "VEX Education VR", url: "https://education.vex.com/vr/" },
+      { note: "Gears Simulator", url: "https://gears.aposteriori.com.sg/" },
+      { note: "Gears – GitHub", url: "https://github.com/QuirkyCort/gears" },
+      { note: "MyModelRobots", url: "https://mymodelrobot.appspot.com/" },
+      { note: "Robotics Simulator – Instructables", url: "https://www.instructables.com/Create-a-Robotics-simulator-using-Processing/" }
+    ]
+  },
+  {
+    id: "space",
+    title: "Spazio",
+    icon: "🚀",
+    color: "#eef2fb",
+    links: [
+      { note: "ESA Climate for Schools", url: "https://climate.esa.int/en/educate/climate-for-schools/" },
+      { note: "ESA Expert Videos", url: "https://www.esa.int/ESA_Multimedia/Sets/Meet_the_ESA_experts/(result_type)/videos" },
+      { note: "Climate Detectives Resources", url: "https://climatedetectives.esa.int/resources/?_categories=case-studies" },
+      { note: "ESA Secondary Classroom", url: "https://www.esa.int/Education/Teachers_Corner/Secondary_classroom_resources" },
+      { note: "ESA Planetary Defence", url: "https://www.esa.int/Space_Safety/Planetary_Defence" },
+      { note: "Sentinel Hub EO Browser", url: "https://www.sentinel-hub.com/explore/eobrowser/" },
+      { note: "Mooncamp Challenge", url: "https://mooncampchallenge.org/" },
+      { note: "ESA RACE", url: "https://race.esa.int/" },
+      { note: "Air Quality Station (video)", url: "https://www.esa.int/ESA_Multimedia/Videos/2019/05/Air_quality_station" },
+      { note: "AQP ESA", url: "https://aqp.eo.esa.int/" },
+      { note: "Air Quality Map ESA", url: "https://aqp.eo.esa.int/map/" },
+      { note: "Solar System Scope", url: "https://www.solarsystemscope.com/" },
+      { note: "Solar Textures", url: "https://www.solarsystemscope.com/textures/" },
+      { note: "Paradosso di Fermi (YouTube)", url: "https://youtu.be/sNhhvQGsMEc" }
+    ]
+  },
+  {
+    id: "steam",
+    title: "STEAM",
+    icon: "🔬",
+    color: "#e8f5e9",
+    links: [
+      { note: "Science Buddies Virtual Expo", url: "https://www.sciencebuddies.org/blog/virtual-stem-expo" },
+      { note: "Frontiers for Kids", url: "https://kids.frontiersin.org/" }
+    ]
+  },
+  {
+    id: "stepper",
+    title: "Stepper Motor",
+    icon: "⚙️",
+    color: "#fef9ec",
+    links: [
+      { note: "Arduino Small Steppers", url: "https://arduino-info.wikispaces.com/SmallSteppers" },
+      { note: "YouTube – Stepper Demo", url: "https://www.youtube.com/watch?time_continue=1151&v=B86nqDRskVU" },
+      { note: "Grove Starter Kit – Stepper", url: "https://create.arduino.cc/projecthub/trduunze/grove-starter-kit-for-arduino-stepper-motor-driver-66471d" }
+    ]
+  },
+  {
+    id: "storytelling",
+    title: "Storytelling",
+    icon: "📖",
+    color: "#fdf2f8",
+    links: [
+      { note: "Twinery", url: "http://twinery.org/" },
+      { note: "Inkle Studios – Ink", url: "https://www.inklestudios.com/ink" },
+      { note: "Pixton – fumetti", url: "https://www.pixton.com/" }
+    ]
+  },
+  {
+    id: "tassellazione",
+    title: "Tassellazione",
+    icon: "🔷",
+    color: "#eef2fb",
+    links: [
+      { note: "Tessellations Nicolas", url: "http://en.tessellations-nicolas.com/method.php" }
+    ]
+  },
+  {
+    id: "texture",
+    title: "Texture",
+    icon: "🎨",
+    color: "#f5eef8",
+    links: [
+      { note: "Pexels Textures", url: "https://www.pexels.com/search/texture/" },
+      { note: "Polyhaven", url: "https://polyhaven.com/textures" },
+      { note: "Pixela.ai", url: "https://pixela.ai/" },
+      { note: "Solar System Textures", url: "https://www.solarsystemscope.com/textures/" }
+    ]
+  },
+  {
+    id: "tinkering",
+    title: "Tinkering",
+    icon: "🛠️",
+    color: "#fef9ec",
+    links: [
+      { note: "Wonderful Idea Workshop", url: "https://wonderfulidea.co/the-tinkering-workshop" },
+      { note: "LEGO Tinkering Pegboard", url: "http://www.instructables.com/id/LEGO-Tinkering-Pegboard/" },
+      { note: "Exploratorium Tinkering", url: "http://tinkering.exploratorium.edu/taxonomy/term/7986" },
+      { note: "LEGO Linkage Experiments", url: "http://tinkering.exploratorium.edu/2016/05/09/lego-linkage-experiments" },
+      { note: "Exploring Linkages", url: "http://tinkering.exploratorium.edu/2015/06/22/exploring-linkages-tinkerer-residence-noga-elhassid" },
+      { note: "LEGO Art Machine", url: "http://tinkering.exploratorium.edu/2016/12/12/lego-art-machines-kit" },
+      { note: "Paper Circuits – Technolojie", url: "http://technolojie.com/category/featured-projects/" },
+      { note: "High Low Tech – MIT", url: "http://highlowtech.org/?cat=5" },
+      { note: "Poliedri di carta", url: "http://www.korthalsaltes.com/" },
+      { note: "Creative Park – Canon", url: "https://cp.c-ij.com/en/index.html" },
+      { note: "Template Maker", url: "https://www.templatemaker.nl/" }
+    ]
+  },
+  {
+    id: "tools",
+    title: "Tools Generali",
+    icon: "🧰",
+    color: "#fef9ec",
+    links: [
+      { note: "BotFrame – chatbot simulator", url: "https://botframe.com/editor/new#" },
+      { note: "Random.org", url: "https://www.random.org/" },
+      { note: "Canva in classe", url: "https://shakeuplearning.com/blog/30-ways-to-use-free-templates-from-canva-in-your-classroom-part-1-suls0132/" },
+      { note: "Kahoot", url: "https://play.kahoot.it/" },
+      { note: "Smallpdf – editor PDF", url: "https://smallpdf.com/it/modificare-pdf" },
+      { note: "Glogster", url: "http://webuse.glogster.com/" },
+      { note: "Awesome GameDev", url: "https://notabug.org/Calinou/awesome-gamedev/src/master/README.md" },
+      { note: "Visual Patterns", url: "http://www.visualpatterns.org/" },
+      { note: "Coolors – color palette", url: "https://coolors.co/palettes/trending" }
+    ]
+  },
+  {
+    id: "turtle-art",
+    title: "Turtle Art",
+    icon: "🐢",
+    color: "#e8f5e9",
+    links: [
+      { note: "TurtleArt – Playful Invention", url: "http://www.playfulinvention.com/turtleart/art.html" },
+      { note: "TurtleBlocks.js Guide", url: "https://github.com/walterbender/turtleblocksjs/blob/master/guide/README.md" },
+      { note: "TurtleArt Download – MIT", url: "https://llk.media.mit.edu/courses/software/turtleart2/" },
+      { note: "Turtle Art – SugarLabs", url: "http://wiki.sugarlabs.org/go/Activities/Turtle_Art" },
+      { note: "Turtle.sugarlabs (online)", url: "https://turtle.sugarlabs.org/" },
+      { note: "WebTurtleArt", url: "https://www.playfulinvention.com/webturtleart/" }
+    ]
+  },
+  {
+    id: "vr",
+    title: "VR / XR",
+    icon: "🥽",
+    color: "#eef2fb",
+    links: [
+      { note: "Scratch for Second Life", url: "http://web.mit.edu/~eric_r/Public/S4SL/tutorial/index.html" },
+      { note: "A-Frame", url: "https://aframe.io/" },
+      { note: "A-Frame & Glitch – WebVR", url: "https://medium.com/@kfarr/teaching-webvr-using-a-frame-and-glitch-for-intro-to-3d-programming-summer-course-ff63a0dd3884" },
+      { note: "Sketchfab", url: "https://sketchfab.com" }
+    ]
+  },
+  {
+    id: "web-coding",
+    title: "Web Coding",
+    icon: "🌐",
+    color: "#eef2fb",
+    links: [
+      { note: "Appunti Web Development", url: "https://omote.bonano.me/2021/04/14/appunti-da-un-corso-di-web-development/" },
+      { note: "CSS Diner", url: "https://flukeout.github.io/" },
+      { note: "Web Literacy – Mozilla", url: "https://web.archive.org/web/20191127140532/https://mozilla.github.io/content/web-lit-whitepaper/" }
+    ]
+  },
+  {
+    id: "web-sdr",
+    title: "Web SDR / Radio",
+    icon: "📻",
+    color: "#fef9ec",
+    links: [
+      { note: "WebSDR.org", url: "http://www.websdr.org/" },
+      { note: "KiwiSDR", url: "http://www.jks.com/KiwiSDR/" },
+      { note: "WebSDR – University of Twente", url: "http://websdr.ewi.utwente.nl:8901/" },
+      { note: "Heavens Above – passaggi", url: "https://www.heavens-above.com/" },
+      { note: "ISS SSTV – AMSAT UK", url: "https://amsat-uk.org/beginners/iss-sstv/" },
+      { note: "ISS Position – AstroViewer", url: "https://www.astroviewer.net/iss/en/" },
+      { note: "Spot The Station – NASA", url: "https://spotthestation.nasa.gov/tracking_map.cfm" },
+      { note: "SSTV Video (YouTube)", url: "https://youtu.be/zfO5JeSe-dE" },
+      { note: "ARISS SSTV Blog", url: "http://ariss-sstv.blogspot.com/" },
+      { note: "ARISS.org", url: "https://www.ariss.org/" },
+      { note: "DIY Satellite Ground Station", url: "https://publiclab.org/notes/sashae/06-26-2020/diy-satellite-ground-station" },
+      { note: "Listening via WebSDR", url: "https://newenglandweathernet.com/announcements/listening-using-a-websdr/" },
+      { note: "Radio HF Online WebSDR", url: "https://iu8cri.altervista.org/radio-hf-on-line-websdr-del-mondo-openwebrx/" }
+    ]
+  }
+];
+
+// ── Build UI ──────────────────────────────────────────────────────────────
+const grid = document.getElementById('grid');
+const filterBar = document.getElementById('filter-bar');
+const noResults = document.getElementById('no-results');
+const catCountEl = document.getElementById('cat-count');
+const linkCountEl = document.getElementById('link-count');
+
+function countLinks(cat) {
+  if (cat.subsections) {
+    return cat.subsections.reduce((s, sub) => s + sub.links.length, 0);
+  }
+  return cat.links ? cat.links.length : 0;
+}
+
+function buildLinkList(links, listEl) {
+  links.forEach(l => {
+    const li = document.createElement('li');
+    li.className = 'link-item';
+    if (l.note) {
+      const n = document.createElement('span');
+      n.className = 'link-note';
+      n.textContent = l.note;
+      li.appendChild(n);
+    }
+    const a = document.createElement('a');
+    a.href = l.url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    // display readable URL
+    try {
+      const parsed = new URL(l.url);
+      a.textContent = parsed.hostname.replace(/^www\./, '') + (parsed.pathname.length > 1 ? parsed.pathname.slice(0, 40) : '');
+    } catch {
+      a.textContent = l.url.slice(0, 60);
+    }
+    li.appendChild(a);
+    listEl.appendChild(li);
+  });
+}
+
+function buildCard(cat) {
+  const card = document.createElement('div');
+  card.className = 'cat-card';
+  card.dataset.id = cat.id;
+
+  const header = document.createElement('div');
+  header.className = 'cat-header';
+
+  const icon = document.createElement('div');
+  icon.className = 'cat-icon';
+  icon.style.background = cat.color || '#eef2fb';
+  icon.textContent = cat.icon;
+
+  const title = document.createElement('span');
+  title.className = 'cat-title';
+  title.textContent = cat.title;
+
+  const count = document.createElement('span');
+  count.className = 'cat-count';
+  count.textContent = countLinks(cat);
+
+  header.appendChild(icon);
+  header.appendChild(title);
+  header.appendChild(count);
+  card.appendChild(header);
+
+  const body = document.createElement('div');
+  body.className = 'cat-body';
+
+  if (cat.subsections) {
+    cat.subsections.forEach(sub => {
+      const sec = document.createElement('div');
+      sec.className = 'sub-section';
+      const label = document.createElement('div');
+      label.className = 'sub-label';
+      label.textContent = sub.label;
+      sec.appendChild(label);
+      const ul = document.createElement('ul');
+      ul.className = 'link-list';
+      buildLinkList(sub.links, ul);
+      sec.appendChild(ul);
+      body.appendChild(sec);
+    });
+  } else {
+    const ul = document.createElement('ul');
+    ul.className = 'link-list';
+    buildLinkList(cat.links || [], ul);
+    body.appendChild(ul);
+  }
+
+  card.appendChild(body);
+  return card;
+}
+
+function renderAll(list) {
+  grid.innerHTML = '';
+  if (list.length === 0) {
+    noResults.style.display = 'block';
+  } else {
+    noResults.style.display = 'none';
+    list.forEach((cat, i) => {
+      const card = buildCard(cat);
+      card.style.animationDelay = Math.min(i * 0.03, 0.3) + 's';
+      grid.appendChild(card);
+    });
+  }
+}
+
+// stats
+const totalLinks = DATA.reduce((s, c) => s + countLinks(c), 0);
+catCountEl.textContent = DATA.length;
+linkCountEl.textContent = totalLinks;
+
+// filter pills
+const allPill = document.createElement('div');
+allPill.className = 'filter-pill active';
+allPill.textContent = 'Tutte';
+allPill.dataset.id = 'all';
+filterBar.appendChild(allPill);
+
+DATA.forEach(cat => {
+  const pill = document.createElement('div');
+  pill.className = 'filter-pill';
+  pill.textContent = cat.title;
+  pill.dataset.id = cat.id;
+  filterBar.appendChild(pill);
+});
+
+let activeFilter = 'all';
+
+filterBar.addEventListener('click', e => {
+  const pill = e.target.closest('.filter-pill');
+  if (!pill) return;
+  activeFilter = pill.dataset.id;
+  filterBar.querySelectorAll('.filter-pill').forEach(p => p.classList.toggle('active', p.dataset.id === activeFilter));
+  applyFilters();
+});
+
+// search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', applyFilters);
+
+function applyFilters() {
+  const query = searchInput.value.toLowerCase().trim();
+  let result = DATA;
+
+  if (activeFilter !== 'all') {
+    result = result.filter(c => c.id === activeFilter);
+  }
+
+  if (query) {
+    result = result.map(cat => {
+      let matchedSubs = null;
+      if (cat.subsections) {
+        matchedSubs = cat.subsections.map(sub => {
+          const filteredLinks = sub.links.filter(l =>
+            (l.note || '').toLowerCase().includes(query) || l.url.toLowerCase().includes(query)
+          );
+          return { ...sub, links: filteredLinks };
+        }).filter(sub => sub.links.length > 0);
+      }
+      const filteredLinks = cat.links
+        ? cat.links.filter(l => (l.note || '').toLowerCase().includes(query) || l.url.toLowerCase().includes(query))
+        : undefined;
+
+      const titleMatch = cat.title.toLowerCase().includes(query);
+
+      if (titleMatch) return cat;
+      if (matchedSubs && matchedSubs.length > 0) return { ...cat, subsections: matchedSubs };
+      if (filteredLinks && filteredLinks.length > 0) return { ...cat, links: filteredLinks };
+      return null;
+    }).filter(Boolean);
+  }
+
+  renderAll(result);
+}
+
+renderAll(DATA);
+</script>
+</body>
+</html>
