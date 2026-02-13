@@ -73,60 +73,87 @@ La categoria AI è la più ricca e include:
 
 ---
 
-## 🚀 Come usare
+## 🚀 Setup
 
-1. **Clona o scarica** il repository
-   ```bash
-   git clone https://github.com/tuo-utente/learning-tools.git
-   ```
+### 1. Clona il repository
 
-2. **Apri il file** nel browser
-   ```bash
-   open learning-resources.html
-   # oppure fai doppio click sul file
-   ```
+```bash
+git clone https://github.com/tuo-utente/learning-tools.git
+cd learning-tools
+```
 
-3. Usa la **barra di ricerca** in alto o clicca sulle **pill** per filtrare per categoria.
+### 2. Pubblica su GitHub Pages
+
+Vai in **Settings → Pages**, seleziona il branch `main` e la cartella `/root`.  
+GitHub ti fornirà un URL tipo `https://tuo-utente.github.io/learning-tools/`.
+
+### 3. Crea un Personal Access Token
+
+1. Vai su [github.com/settings/tokens](https://github.com/settings/tokens) → **Generate new token (classic)**
+2. Seleziona lo scope **`repo`**
+3. Copia il token generato (`ghp_…`)
+
+> ⚠️ Il token non viene mai inviato a terze parti — viene usato **solo** per chiamare le GitHub API direttamente dal tuo browser.
+
+### 4. Connetti l'interfaccia
+
+Apri la pagina nel browser. Nella barra in cima inserisci:
+- Il tuo **username GitHub**
+- Il nome del **repository**
+- Il tuo **Personal Access Token**
+
+Clicca **Connetti** — i dati vengono caricati da `data.json` nel repo.
+
+---
+
+## ➕ Aggiungere risorse dall'interfaccia
+
+Una volta connesso, clicca **＋ Aggiungi risorsa** in alto a destra:
+
+1. Seleziona la **categoria** (o creane una nuova con nome, icona e colore)
+2. Scegli eventuale **sottocategoria** (per categorie strutturate come AI)
+3. Inserisci **descrizione** e **URL**
+4. Clicca **Salva su GitHub**
+
+Il file `data.json` viene aggiornato nel repository con un commit automatico. La pagina si aggiorna istantaneamente.
+
+---
+
+## 🗂️ Struttura file
+
+```
+.
+├── learning-resources.html   # Interfaccia principale
+├── data.json                 # Database risorse (aggiornato via GitHub API)
+└── README.md
+```
+
+Il file `data.json` contiene un array di oggetti categoria:
+
+```json
+[
+  {
+    "id": "nome-categoria",
+    "title": "Nome Categoria",
+    "icon": "🔧",
+    "color": "#f5eef8",
+    "links": [
+      { "note": "Descrizione risorsa", "url": "https://esempio.com" }
+    ]
+  }
+]
+```
 
 ---
 
 ## 🛠️ Tecnologie
 
-- **HTML5** — struttura semantica
-- **CSS3** — custom properties, grid, flexbox, animazioni
-- **JavaScript** (vanilla) — ricerca, filtri, rendering dinamico
+- **HTML5 / CSS3 / JavaScript** vanilla — nessuna dipendenza
+- **GitHub Contents API** — lettura e scrittura di `data.json`
 - **Google Fonts** — Playfair Display + DM Sans
+- **GitHub Pages** — hosting gratuito
 
-Nessun framework, nessuna dipendenza npm, nessun build step.
-
----
-
-## 🤝 Contribuire
-
-Hai una risorsa da aggiungere? Apri una **Issue** o una **Pull Request**!
-
-Per aggiungere un link, modifica l'oggetto della categoria corrispondente nel blocco `DATA` all'interno di `learning-resources.html`:
-
-```javascript
-{
-  note: "Nome descrittivo della risorsa",
-  url: "https://esempio.com"
-}
-```
-
-Per aggiungere una nuova categoria, aggiungi un nuovo oggetto all'array `DATA`:
-
-```javascript
-{
-  id: "nome-categoria",        // identificatore unico (kebab-case)
-  title: "Nome Categoria",     // titolo visualizzato
-  icon: "🔧",                  // emoji icona
-  color: "#f5eef8",            // colore di sfondo dell'header card
-  links: [
-    { note: "Descrizione", url: "https://..." }
-  ]
-}
-```
+Nessun framework, nessun build step, nessun server.
 
 ---
 
